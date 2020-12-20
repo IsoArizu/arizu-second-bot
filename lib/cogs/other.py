@@ -12,13 +12,13 @@ class Other(commands.Cog):
     async def slap_member(self, ctx, member: Member, *, reason: Optional[str] = "for no reason"):
         await ctx.send(f"{ctx.author.display_name} slapped {member.mention} {reason}")
 
-    '''@slap_member.error
+    @slap_member.error
     async def slap_error(self, ctx, exc):
         if isinstance(exc, MemberNotFound):
-            await ctx.send("Я не могу найти такого пользователя")'''
+            await ctx.send("Я не могу найти такого пользователя")
 
     @commands.command(name="echo")
-    async def echo(self, ctx, message):
+    async def echo(self, ctx, *, message):
         await ctx.message.delete()
         await ctx.send(message)
 

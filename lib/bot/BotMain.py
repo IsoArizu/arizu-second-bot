@@ -3,12 +3,13 @@ from asyncio import sleep
 from datetime import datetime
 from discord.ext import commands
 from glob import glob
-from discord.ext.commands.errors import MemberNotFound, BadArgument
-from discord.errors import HTTPException
+from discord.ext.commands.errors import BadArgument, MissingRequiredArgument
+from discord.errors import HTTPException, Forbidden
 
 PREFIX = "+"
 OWNER_ID = [327062541438287872]
 COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")]
+IGNORE_EXCEPTIONS = (commands.CommandNotFound, BadArgument)
 
 
 class Ready(object):
@@ -68,10 +69,16 @@ class Bot(commands.Bot):
     async def on_command_error(self, ctx, exc):
         if isinstance(exc, commands.CommandNotFound):
             await ctx.send("Не выдумывай")
+        #  elif any([isinstance(exc, error) for error in IGNORE_EXCEPTIONS]):
+            #  pass
+        elif isinstance(exc, MissingRequiredArgument):
+            await ctx.send("Добавь пожалуйста нужные аргументы :)")
         elif isinstance(exc, BadArgument):
             pass
         elif isinstance(exc.original, HTTPException):
             pass
+        elif isinstance(exc.original, Forbidden):
+            await ctx.send("У меня нет на это разрешения :(")
         elif hasattr(exc, "original"):
             raise exc.original
         else:
@@ -82,7 +89,7 @@ class Bot(commands.Bot):
             self.guild = self.get_guild(770674670973878332)
 
             channel = self.get_channel(786965436667133993)
-            '''users = self.guild.members
+            users = self.guild.members
             online_count = 0
             for member in users:
                 status = member.status
@@ -99,7 +106,7 @@ class Bot(commands.Bot):
             embed.set_image(url="https://media1.tenor.com/images/5f29f4f87dff192c131f4eba38156837/tenor.gif?itemid=18353747")
             embed.set_footer(text="Давайте приятно проведем время")
 
-            await channel.send(embed=embed)'''
+            await channel.send(embed=embed)
             print(" connecting cogs")
             while not self.cogs_ready.all_ready():
                 await sleep(0.5)
