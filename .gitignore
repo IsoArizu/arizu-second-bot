@@ -1,5 +1,5 @@
-__pycache__
-.idea
 *.db
 *.db-journal
+__pycache__
 lib/bot/token.txt
+.idea
