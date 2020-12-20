@@ -4,6 +4,7 @@ from datetime import datetime
 from discord.ext import commands
 from glob import glob
 from discord.ext.commands.errors import MemberNotFound, BadArgument
+from discord.errors import HTTPException
 
 PREFIX = "+"
 OWNER_ID = [327062541438287872]
@@ -68,6 +69,8 @@ class Bot(commands.Bot):
         if isinstance(exc, commands.CommandNotFound):
             await ctx.send("Не выдумывай")
         elif isinstance(exc, BadArgument):
+            pass
+        elif isinstance(exc.original, HTTPException):
             pass
         elif hasattr(exc, "original"):
             raise exc.original
