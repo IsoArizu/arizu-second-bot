@@ -8,6 +8,7 @@ PREFIX = "+"
 OWNER_ID = [327062541438287872]
 COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")]
 
+
 class Ready(object):
     def __init__(self):
         for cog in COGS:
