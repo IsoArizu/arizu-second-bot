@@ -12,8 +12,8 @@ class Other(commands.Cog):
         self.bot = bot
 
     @commands.command(name="slap")
-    async def slap_member(self, ctx, member: Member, *, reason: Optional[str] = "for no reason"):
-        await ctx.send(f"{ctx.author.display_name} slapped {member.mention} {reason}")
+    async def slap_member(self, ctx, member: Member, *, reason: Optional[str] = "без причины"):
+        await ctx.send(f"{ctx.author.display_name} ударил по щеке {member.mention} {reason}")
 
     @slap_member.error
     async def slap_error(self, ctx, exc):

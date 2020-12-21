@@ -100,7 +100,7 @@ class Bot(commands.Bot):
                     online_count += 1
             embed = discord.Embed(title="IsoArizu Подключилась к серверу!",
                                   description="Теперь я готова исполнять твои команды. :kissing_heart:",
-                                  colour=discord.Colour.blue(),
+                                  colour=discord.Colour.light_gray(),
                                   timestamp=datetime.utcnow())
             field = [("Всего пользователей", self.guild.member_count, True),
                      ("Онлайн пользователей", online_count, True)]
