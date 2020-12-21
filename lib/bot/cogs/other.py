@@ -17,6 +17,7 @@ class Other(commands.Cog):
         if isinstance(exc, MemberNotFound):
             await ctx.send("Я не могу найти такого пользователя")
 
+    @commands.cooldown(1, 4, commands.BucketType.user) # Одно использование, 60 секунд, Пользователь
     @commands.command(name="echo")
     async def echo(self, ctx, *, message):
         await ctx.message.delete()

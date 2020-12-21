@@ -2,4 +2,4 @@
 *.db-journal
 __pycache__
 .idea
-lib/bot/token.txt
+lib/bot/token.0
