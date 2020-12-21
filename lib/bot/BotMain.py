@@ -3,12 +3,12 @@ from asyncio import sleep
 from datetime import datetime
 from discord.ext import commands
 from glob import glob
-from discord.ext.commands.errors import BadArgument, MissingRequiredArgument
+from discord.ext.commands.errors import BadArgument, MissingRequiredArgument, CommandOnCooldown
 from discord.errors import HTTPException, Forbidden
 
 PREFIX = "+"
 OWNER_ID = [327062541438287872]
-COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")]
+COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/bot/cogs/*.py")]
 IGNORE_EXCEPTIONS = (commands.CommandNotFound, BadArgument)
 
 
@@ -38,7 +38,7 @@ class Bot(commands.Bot):
 
     def setup(self):
         for cog in COGS:
-            self.load_extension(f"lib.cogs.{cog}")
+            self.load_extension(f"lib.bot.cogs.{cog}")
             print(f" {cog} cog loaded")
         print("setup is complete")
 
@@ -48,7 +48,7 @@ class Bot(commands.Bot):
         print("running setup...")
         self.setup()
 
-        with open("./lib/bot/token.txt", "r", encoding="utf-8") as tf:
+        with open("./lib/bot/token.0", "r", encoding="utf-8") as tf:
             self.TOKEN = tf.read().strip()
 
         print("running bot...")
@@ -75,10 +75,13 @@ class Bot(commands.Bot):
             await ctx.send("Добавь пожалуйста нужные аргументы :)")
         elif isinstance(exc, BadArgument):
             pass
-        elif isinstance(exc.original, HTTPException):
-            pass
-        elif isinstance(exc.original, Forbidden):
-            await ctx.send("У меня нет на это разрешения :(")
+        elif isinstance(exc, CommandOnCooldown):
+            await ctx.send(f"Твоя команда откатывается. Подожди ещё {exc.retry_after:,.0f} секнуд(ы)")
+        elif hasattr(exc, "original"):
+            if isinstance(exc.original, HTTPException):
+                pass
+            elif isinstance(exc.original, Forbidden):
+                await ctx.send("У меня нет на это разрешения :(")
         elif hasattr(exc, "original"):
             raise exc.original
         else:
@@ -95,16 +98,17 @@ class Bot(commands.Bot):
                 status = member.status
                 if status.name == "online":
                     online_count += 1
-            embed = discord.Embed(title="IsoArizu Connected to the Server!", description="IsoArizuBot now is ready for work.", colour=discord.Colour.blue(),
+            embed = discord.Embed(title="IsoArizu Подключилась к серверу!",
+                                  description="Теперь я готова исполнять твои команды. :kissing_heart:",
+                                  colour=discord.Colour.blue(),
                                   timestamp=datetime.utcnow())
             field = [("Всего пользователей", self.guild.member_count, True),
                      ("Онлайн пользователей", online_count, True)]
-            for name, value, inline in field:
-                embed.add_field(name=name, value=value, inline=inline)
+            '''for name, value, inline in field:
+                embed.add_field(name=name, value=value, inline=inline)'''
             embed.set_author(name=self.guild.name, icon_url=self.guild.icon_url)
             embed.set_thumbnail(url=self.get_user(790114584576917535).avatar_url)
             embed.set_image(url="https://media1.tenor.com/images/5f29f4f87dff192c131f4eba38156837/tenor.gif?itemid=18353747")
-            embed.set_footer(text="Давайте приятно проведем время")
 
             await channel.send(embed=embed)
             print(" connecting cogs")

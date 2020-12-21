@@ -1,6 +1,8 @@
 from discord.ext import commands
 import random
 
+description = {"roll": "Выдает рандомное число от 1 до 100"}
+
 
 class Gamble(commands.Cog):
     def __init__(self, bot):

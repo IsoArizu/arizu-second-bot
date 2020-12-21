@@ -3,6 +3,9 @@ from typing import Optional
 from discord import Member
 from discord.ext.commands.errors import MemberNotFound
 
+description = {"slap": "Шлепает по щеке",
+               "echo": "Повторяет сообщение"}
+
 
 class Other(commands.Cog):
     def __init__(self, bot):
