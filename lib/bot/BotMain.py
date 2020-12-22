@@ -3,7 +3,7 @@ from asyncio import sleep
 from datetime import datetime
 from discord.ext import commands
 from glob import glob
-from discord.ext.commands.errors import BadArgument, MissingRequiredArgument, CommandOnCooldown
+from discord.ext.commands.errors import BadArgument, MissingRequiredArgument, CommandOnCooldown, MissingPermissions
 from discord.errors import HTTPException, Forbidden
 
 PREFIX = "+"
@@ -71,8 +71,10 @@ class Bot(commands.Bot):
             await ctx.send("Не выдумывай")
         #  elif any([isinstance(exc, error) for error in IGNORE_EXCEPTIONS]):
             #  pass
+        elif isinstance(exc, MissingPermissions):
+            await ctx.send("У тебя нету права исполнять эту команду!")
         elif isinstance(exc, MissingRequiredArgument):
-            await ctx.send("Добавь пожалуйста нужные аргументы :)")
+            await ctx.send("Добавь пожалуйста нужные аргументы")
         elif isinstance(exc, BadArgument):
             pass
         elif isinstance(exc, CommandOnCooldown):

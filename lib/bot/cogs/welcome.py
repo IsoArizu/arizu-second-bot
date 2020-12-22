@@ -27,7 +27,7 @@ class Welcome(commands.Cog):
                               colour=discord.Colour.red())
 
         embed.set_author(name=self.bot.guild.name, icon_url=self.bot.guild.icon_url)
-        embed.set_image(url="https://media1.tenor.com/images/5fef7e81073d77990773d77461586d81/tenor.gif?itemid=14570555")
+        embed.set_image(url="https://media1.tenor.com/images/5c4f6bec0a9cf8b9e55ae5967c3b1724/tenor.gif?itemid=16005565")
         embed.set_thumbnail(url=member.avatar_url)
         await self.bot.get_channel(786965436667133993).send(embed=embed)
 
