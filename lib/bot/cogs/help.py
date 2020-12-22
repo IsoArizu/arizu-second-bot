@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import discord
 import os
 from typing import Optional
@@ -33,13 +35,16 @@ class Help(commands.Cog):
         """Показывает это сообщение."""
         if cmd is None:
             embed = discord.Embed(title="Помощь по командам:",
-                                  description="Сейчас я помугу вам разобраться",
-                                  colour=discord.Colour.red())
+                                  description="Команды доступные на сервере.",
+                                  colour=discord.Colour.red(),
+                                  timestamp=datetime.utcnow())
             embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
             embed.add_field(name="Gamble", value="`+roll`: Выдает рандомное число от 1 до 100.\n", inline=False)
             embed.add_field(name="Other", value="`+slap`: Шлепает выбранного пользователя по щеке.\n `+echo`: Повторяет посланное сообщение.\n", inline=False)
             embed.add_field(name="Help", value="`+help`: Показывает это сообщение.\n `+help arg`: Показывает помощь по выбранной команде.\n", inline=False)
-            embed.set_thumbnail(url=ctx.bot.get_user(790114584576917535).avatar_url)
+            embed.set_thumbnail(url=self.bot.get_user(790114584576917535).avatar_url)
+            embed.set_image(url="https://cdn.discordapp.com/attachments/786965436667133993/790845429767077898/910979.png")
+            embed.set_footer(text="Страница 1")
             await ctx.send(embed=embed)
         else:
             if (command := get(self.bot.commands, name=cmd)):

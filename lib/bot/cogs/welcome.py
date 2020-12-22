@@ -5,6 +5,7 @@ import discord
 class Welcome(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.channel = None
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -20,8 +21,15 @@ class Welcome(commands.Cog):
         await self.bot.get_channel(786965436667133993).send(embed=embed)
 
     @commands.Cog.listener()
-    async def on_member_leave(self, member):
-        pass
+    async def on_member_remove(self, member):
+        embed = discord.Embed(title="Член экипажа покинул команду!",
+                              description=f"{member.name} больше нету на нашем сервере, помянем!",
+                              colour=discord.Colour.red())
+
+        embed.set_author(name=self.bot.guild.name, icon_url=self.bot.guild.icon_url)
+        embed.set_image(url="https://media1.tenor.com/images/5fef7e81073d77990773d77461586d81/tenor.gif?itemid=14570555")
+        embed.set_thumbnail(url=member.avatar_url)
+        await self.bot.get_channel(786965436667133993).send(embed=embed)
 
     @commands.Cog.listener()
     async def on_ready(self):

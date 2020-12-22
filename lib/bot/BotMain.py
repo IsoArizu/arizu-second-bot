@@ -98,9 +98,9 @@ class Bot(commands.Bot):
                 status = member.status
                 if status.name == "online":
                     online_count += 1
-            embed = discord.Embed(title="IsoArizu Подключилась к серверу!",
-                                  description="Теперь я готова исполнять твои команды. :kissing_heart:",
-                                  colour=discord.Colour.light_gray(),
+            embed = discord.Embed(title="IsoArizuBot Подключился к серверу!",
+                                  description="Теперь он готов выполнять твои команды. :male_sign:",
+                                  colour=discord.Colour.blurple(),
                                   timestamp=datetime.utcnow())
             field = [("Всего пользователей", self.guild.member_count, True),
                      ("Онлайн пользователей", online_count, True)]
@@ -109,14 +109,15 @@ class Bot(commands.Bot):
             embed.set_author(name=self.guild.name, icon_url=self.guild.icon_url)
             embed.set_thumbnail(url=self.get_user(790114584576917535).avatar_url)
             embed.set_image(url="https://media1.tenor.com/images/5f29f4f87dff192c131f4eba38156837/tenor.gif?itemid=18353747")
+            embed.set_footer(text="Without further interruption...")
 
             await channel.send(embed=embed)
             print(" connecting cogs")
             while not self.cogs_ready.all_ready():
                 await sleep(0.5)
-
+            print(" connecting finished")
             self.ready = True
-            print(" bot ready")
+            print("bot ready")
 
         else:
             print("bot reconnected")
