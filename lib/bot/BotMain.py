@@ -1,4 +1,6 @@
 import discord
+import random
+from discord.ext import tasks
 from asyncio import sleep
 from datetime import datetime
 from discord.ext import commands
@@ -7,6 +9,7 @@ from discord.ext.commands.errors import BadArgument, MissingRequiredArgument, Co
 from discord.errors import HTTPException, Forbidden
 
 PREFIX = "+"
+STATUS = ['Пинает деда', 'Смотрит Гачи', 'CyberPunk2077', 'Ищет FuckingSlaves', "Escape from Tarkov"]
 OWNER_ID = [327062541438287872]
 COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/bot/cogs/*.py")]
 IGNORE_EXCEPTIONS = (commands.CommandNotFound, BadArgument)
@@ -54,6 +57,7 @@ class Bot(commands.Bot):
         print("running bot...")
         super().run(self.TOKEN, reconnect=True)
 
+
     async def on_connect(self):
         print(" bot connected")
 
@@ -89,10 +93,15 @@ class Bot(commands.Bot):
         else:
             raise exc
 
+    @tasks.loop(seconds=60)
+    async def change_status(self):
+        await bot.change_presence(status=discord.Status.online, activity=discord.Game(random.choice(STATUS)))
+
     async def on_ready(self):
         if not self.ready:
+            self.change_status.start()
+            await bot.change_presence(status=discord.Status.online, activity=discord.Game(random.choice(STATUS)))
             self.guild = self.get_guild(770674670973878332)
-
             channel = self.get_channel(786965436667133993)
             users = self.guild.members
             online_count = 0
